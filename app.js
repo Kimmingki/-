@@ -3,6 +3,7 @@ const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
+const saveBtn = document.getElementById("jsSave");
 
 // variable
 const INITIAL_COLOR = "#2c2c2c";
@@ -72,6 +73,18 @@ function handleCanavasClick() {
   if (filling) ctx.fillRect(0, 0, canvas.width, canvas.height);
 }
 
+function handleCM(event) {
+  event.preventDefault();
+}
+
+function handleSaveClick() {
+  const image = canvas.toDataURL();
+  const link = document.createElement("a");
+  link.href = image;
+  link.download = "paintjs";
+  link.click();
+}
+
 // ---------------- End function logic -------------------
 
 // ---------------- Start Event Listening ---------------------
@@ -81,6 +94,7 @@ if (canvas) {
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("mouseleave", stopPainting);
   canvas.addEventListener("click", handleCanavasClick);
+  canvas.addEventListener("contextmenu", handleCM);
 }
 
 Array.from(colors).forEach((color) =>
@@ -93,6 +107,10 @@ if (range) {
 
 if (mode) {
   mode.addEventListener("click", handleModeClick);
+}
+
+if (saveBtn) {
+  saveBtn.addEventListener("click", handleSaveClick);
 }
 
 // ---------------- End Event Listening ---------------------
