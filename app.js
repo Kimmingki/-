@@ -4,18 +4,25 @@ const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
 const mode = document.getElementById("jsMode");
 
-// 캔버스 사이즈 지정
-canvas.width = 700;
-canvas.height = 700;
-
-// 브러쉬 색상 및 사이즈 지정
-ctx.strokeStyle = "#2c2c2c";
-ctx.lineWidth = 2.5;
-
 // variable
+const INITIAL_COLOR = "#2c2c2c";
+const CANVAS_SIZE = 700;
 let painting = false;
 let filling = false;
 
+// 캔버스 사이즈 지정
+canvas.width = CANVAS_SIZE;
+canvas.height = CANVAS_SIZE;
+
+// 브러쉬 색상 및 사이즈 초기화
+ctx.strokeStyle = INITIAL_COLOR;
+ctx.lineWidth = 2.5;
+
+// fill 색상 초기화
+ctx.fillStyle = "white";
+ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+// ---------------- start function logic -------------------
 function stopPainting() {
   painting = false;
 }
@@ -39,8 +46,9 @@ function onMouseMove(event) {
 
 function handleColorClick(event) {
   const color = event.target.style.backgroundColor;
-  // 브러쉬 색상 override
+  // 브러쉬 색상, fill 색상 override
   ctx.strokeStyle = color;
+  ctx.fillStyle = color;
 }
 
 function handleRangeChange(event) {
@@ -56,15 +64,23 @@ function handleModeClick() {
   } else {
     filling = true;
     mode.innerText = "Paint";
+    ctx.fillStyle = ctx.strokeStyle;
   }
 }
 
-// Event Listening
+function handleCanavasClick() {
+  if (filling) ctx.fillRect(0, 0, canvas.width, canvas.height);
+}
+
+// ---------------- End function logic -------------------
+
+// ---------------- Start Event Listening ---------------------
 if (canvas) {
   canvas.addEventListener("mousemove", onMouseMove);
   canvas.addEventListener("mousedown", startPainting);
   canvas.addEventListener("mouseup", stopPainting);
   canvas.addEventListener("mouseleave", stopPainting);
+  canvas.addEventListener("click", handleCanavasClick);
 }
 
 Array.from(colors).forEach((color) =>
@@ -78,3 +94,5 @@ if (range) {
 if (mode) {
   mode.addEventListener("click", handleModeClick);
 }
+
+// ---------------- End Event Listening ---------------------
