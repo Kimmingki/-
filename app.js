@@ -2,14 +2,17 @@ const canvas = document.getElementById("jsCanvas");
 const ctx = canvas.getContext("2d");
 const colors = document.getElementsByClassName("jsColor");
 const range = document.getElementById("jsRange");
-const mode = document.getElementById("jsMode");
+const fillBtn = document.getElementById("jsFill");
 const saveBtn = document.getElementById("jsSave");
+const eraserBtn = document.getElementById("jsEraser");
+const clearBtn = document.getElementById("jsClear");
 
 // variable
 const INITIAL_COLOR = "#2c2c2c";
 const CANVAS_SIZE = 700;
 let painting = false;
 let filling = false;
+let eraser = false;
 
 // 캔버스 사이즈 지정
 canvas.width = CANVAS_SIZE;
@@ -36,12 +39,18 @@ function startPainting() {
 function onMouseMove(event) {
   const x = event.offsetX;
   const y = event.offsetY;
-  if (!painting) {
-    ctx.beginPath();
-    ctx.moveTo(x, y);
+  if (eraser) {
+    if (painting) {
+      ctx.clearRect(x, y, 15, 15);
+    }
   } else {
-    ctx.lineTo(x, y);
-    ctx.stroke();
+    if (!painting) {
+      ctx.beginPath();
+      ctx.moveTo(x, y);
+    } else {
+      ctx.lineTo(x, y);
+      ctx.stroke();
+    }
   }
 }
 
@@ -58,13 +67,17 @@ function handleRangeChange(event) {
   ctx.lineWidth = size;
 }
 
-function handleModeClick() {
+function handleFillClick() {
   if (filling === true) {
     filling = false;
-    mode.innerText = "Fill";
+    fillBtn.innerText = "Fill";
   } else {
+    if (eraser) {
+      eraser = false;
+      eraserBtn.style = "border: 2px solid rgba(0, 0, 0, 0.2);";
+    }
     filling = true;
-    mode.innerText = "Paint";
+    fillBtn.innerText = "Paint";
     ctx.fillStyle = ctx.strokeStyle;
   }
 }
@@ -83,6 +96,21 @@ function handleSaveClick() {
   link.href = image;
   link.download = "paintjs";
   link.click();
+}
+
+function handleEraserClick() {
+  if (eraser === true) {
+    eraser = false;
+    eraserBtn.style = "border: 2px solid rgba(0, 0, 0, 0.2);";
+  } else {
+    filling = false;
+    eraser = true;
+    eraserBtn.style = "border: 2px solid black;";
+  }
+}
+
+function handleClearClick() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
 }
 
 // ---------------- End function logic -------------------
@@ -105,12 +133,20 @@ if (range) {
   range.addEventListener("input", handleRangeChange);
 }
 
-if (mode) {
-  mode.addEventListener("click", handleModeClick);
+if (fillBtn) {
+  fillBtn.addEventListener("click", handleFillClick);
+}
+
+if (eraserBtn) {
+  eraserBtn.addEventListener("click", handleEraserClick);
 }
 
 if (saveBtn) {
   saveBtn.addEventListener("click", handleSaveClick);
+}
+
+if (clearBtn) {
+  clearBtn.addEventListener("click", handleClearClick);
 }
 
 // ---------------- End Event Listening ---------------------

@@ -8,22 +8,28 @@
     <title>PaintJS</title>
   </head>
   <body>
-    <canvas id="jsCanvas" class="canvas"></canvas>
+    <div class="canvas_board">
+      <canvas id="jsCanvas" class="canvas"></canvas>
+      <div class="controller">
+        <div class="controls__range">
+          <input
+            type="range"
+            id="jsRange"
+            min="0.1"
+            max="5"
+            value="2.5"
+            step="0.1"
+          />
+        </div>
+        <div class="controls__btns">
+          <button id="jsFill">Fill</button>
+          <button id="jsEraser">Eraser</button>
+          <button id="jsSave">Save</button>
+          <button id="jsClear">Clear</button>
+        </div>
+      </div>
+    </div>
     <div class="controls">
-      <div class="controls__range">
-        <input
-          type="range"
-          id="jsRange"
-          min="0.1"
-          max="5"
-          value="2.5"
-          step="0.1"
-        />
-      </div>
-      <div class="controls__btns">
-        <button id="jsMode">Fill</button>
-        <button id="jsSave">Save</button>
-      </div>
       <div class="controls__colors" id="jsColors">
         <div
           class="controls__color jsColor"
