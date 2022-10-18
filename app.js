@@ -21,6 +21,8 @@ canvas.height = CANVAS_SIZE;
 // 브러쉬 색상 및 사이즈 초기화
 ctx.strokeStyle = INITIAL_COLOR;
 ctx.lineWidth = 6.5;
+ctx.lineCap = "round"; // 부드러운 라인
+ctx.lineJoin = "round";
 
 // fill 색상 초기화
 ctx.fillStyle = "white";
