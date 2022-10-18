@@ -35,6 +35,13 @@ body {
   flex-direction: column;
 }
 
+.controls__btns {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  row-gap: 5px;
+  column-gap: 5px;
+}
+
 .controls__btns button {
   all: unset;
   cursor: pointer;
@@ -62,6 +69,14 @@ body {
   cursor: pointer;
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.11), 0 1px 3px rgba(0, 0, 0, 0.08);
   margin-bottom: 10px;
+}
+
+.controls__colors .controls__color.choice {
+  transform: scale(1.2);
+}
+
+.controls__colors .controls__color:hover {
+  transform: scale(1.2);
 }
 
 .controls .controls__range {

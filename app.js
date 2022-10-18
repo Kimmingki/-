@@ -20,7 +20,7 @@ canvas.height = CANVAS_SIZE;
 
 // 브러쉬 색상 및 사이즈 초기화
 ctx.strokeStyle = INITIAL_COLOR;
-ctx.lineWidth = 2.5;
+ctx.lineWidth = 6.5;
 
 // fill 색상 초기화
 ctx.fillStyle = "white";
@@ -41,7 +41,8 @@ function onMouseMove(event) {
   const y = event.offsetY;
   if (eraser) {
     if (painting) {
-      ctx.clearRect(x, y, 15, 15);
+      ctx.beginPath();
+      clearArc(ctx, x, y, 20);
     }
   } else {
     if (!painting) {
@@ -54,8 +55,26 @@ function onMouseMove(event) {
   }
 }
 
+/**
+ * Eraser 원형으로 부드럽게 하기 위한 Function
+ * @param {context} ctx
+ * @param {x좌표} x
+ * @param {y좌표} y
+ * @param {반지름} radius
+ */
+function clearArc(ctx, x, y, radius) {
+  ctx.save();
+  ctx.globalCompositeOperation = "destination-out";
+  ctx.beginPath();
+  ctx.arc(x, y, radius, 0, 2 * Math.PI, false);
+  ctx.fill();
+  ctx.restore();
+}
+
 function handleColorClick(event) {
   const color = event.target.style.backgroundColor;
+  Array.from(colors).forEach((color) => color.classList.remove("choice"));
+  event.target.classList.add("choice");
   // 브러쉬 색상, fill 색상 override
   ctx.strokeStyle = color;
   ctx.fillStyle = color;
